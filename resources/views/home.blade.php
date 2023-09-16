@@ -4,4 +4,5 @@
     @section('content')
 <body>
     <p>{{$text}}</p>
+    <a href="{{ url('/about') }}">Go to About</a>
     @endsection
