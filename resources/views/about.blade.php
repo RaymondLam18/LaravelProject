@@ -1,17 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>about</title>
-    @vite('resources/css/app.css', 'resources/js/app.js')
-</head>
-<body>
-<header></header>
-<main>
-    @yield('content')
-</main>
-</body>
-</html>
+@extends('layouts.web')
+
+@section('PageTitle', 'About')
+@section('content')
+    <body>
+    <h1>About</h1>
+    <p>{{$text}}</p>
+    <a href="{{ url('/home') }}">Go to Home</a>
+@endsection
