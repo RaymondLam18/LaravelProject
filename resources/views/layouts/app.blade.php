@@ -37,6 +37,10 @@
                         <li class="nav-item">
                             <a href="{{ url('/about') }}">About</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ url('/movie') }}">Movie</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

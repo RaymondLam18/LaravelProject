@@ -18,8 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/about', [App\Http\Controllers\AboutController::class, 'index']);
-
-//Route::resources();
+Route::get('/movie', [App\Http\Controllers\MovieController::class, 'index']);
 
 Auth::routes();
 
