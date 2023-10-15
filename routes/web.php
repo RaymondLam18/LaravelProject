@@ -13,12 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/about', [App\Http\Controllers\AboutController::class, 'index']);
-Route::get('/movie', [App\Http\Controllers\MovieController::class, 'index']);
+Route::get('/about', [App\Http\Controllers\AboutController::class, 'index'])->name('about');
+Route::get('/movie', [App\Http\Controllers\MovieController::class, 'index'])->name('movie');
 
 Auth::routes();
 
