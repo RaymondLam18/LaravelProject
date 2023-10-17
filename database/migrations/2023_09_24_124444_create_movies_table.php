@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('genre');
             $table->text('description');
             $table->timestamps();
+
+            $table->foreignId('user_id')->constrained();
         });
     }
 
