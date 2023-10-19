@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_picture',
         'admin'
     ];
 
@@ -46,5 +47,13 @@ class User extends Authenticatable
 
     public function movies() {
         return $this->hasMany(Movie::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes() {
+        return $this->hasMany(Like::class);
     }
 }
