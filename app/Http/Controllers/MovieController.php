@@ -27,9 +27,9 @@ class MovieController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-//        $movies = Movie::all();
+        $movies = Movie::all();
 //      return view('movie', ['movies' => $movies]);
-      $movies = Movie::all()->sortByDesc('created_at')->where('user_id', '!=', Auth::user()->id);
+//      $movies = Movie::all()->sortByDesc('created_at')->where('user_id', '!=', Auth::user()->id);
 
         return view('movies.home', compact('movies'));
     }
@@ -73,8 +73,11 @@ class MovieController extends Controller
         }
 
         Movie::create([
-            'description' => $data['description'],
+            'title' => $data['title'],
+            'director' => $data['director'],
             'image' => $filename,
+            'genre' => $data['genre'],
+            'description' => $data['description'],
             'status' => 1,
             'user_id' => Auth::user()->id
         ]);
@@ -116,6 +119,12 @@ class MovieController extends Controller
             $movie->image = $filename;
         }
 
+        $movie->title = $data['title'];
+
+        $movie->director = $data['director'];
+
+        $movie->genre = $data['genre'];
+
         $movie->description = $data['description'];
 
         $movie->save();
@@ -134,12 +143,15 @@ class MovieController extends Controller
 
         $movie->delete();
 
-        return redirect()->route('user.movie');
+        return redirect()->route('user.movies');
     }
 
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'title' => ['required', 'string', 'max:255'],
+            'director' => ['required', 'string', 'max:255'],
+            'genre' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'image' => ['mimes:jpg,jpeg,png,gif,svg,webp', 'max:10000']
         ]);

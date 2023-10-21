@@ -29,18 +29,33 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+{{--                    <ul class="navbar-nav me-auto">--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a href="{{ url('/home') }}">Home</a>--}}
+{{--                        </li>--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a href="{{ url('/movie') }}">Movie</a>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a href="{{ url('/home') }}">Home</a>
+                            <a class="nav-link" href="{{ url('/about') }}">About</a>
                         </li>
-
                         <li class="nav-item">
-                            <a href="{{ url('/about') }}">About</a>
+                            <a class="nav-link" href="{{route('movies.index')}}">Movies</a>
                         </li>
-
                         <li class="nav-item">
-                            <a href="{{ url('/movie') }}">Movie</a>
+                            <a class="nav-link" href="{{route('movies.create')}}">Create</a>
                         </li>
+                    </ul>
+
+                    <ul class="navbar-nav mb-auto">
+                        <form action="{{route('movies.search')}}" method="GET">
+                            <div class="input-group">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+                            </div>
+                        </form>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -65,6 +80,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{route('user.index')}}">
+                                        Profile
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
