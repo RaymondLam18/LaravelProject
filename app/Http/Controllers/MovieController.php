@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Like;
 use App\Models\Movie;
-use App\Http\Controllers\Controller;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
-use function Laravel\Prompts\select;
+use Illuminate\Support\Facades\Validator;
 
 class MovieController extends Controller
 {
@@ -27,9 +24,9 @@ class MovieController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-        $movies = Movie::all();
-//      return view('movie', ['movies' => $movies]);
-//      $movies = Movie::all()->sortByDesc('created_at')->where('user_id', '!=', Auth::user()->id);
+//        $movies = Movie::all();
+//        return view('movie', ['movies' => $movies]);
+        $movies = Movie::all()->sortByDesc('created_at')->where('status', '=', '1');
 
         return view('movies.home', compact('movies'));
     }
@@ -38,16 +35,49 @@ class MovieController extends Controller
      * Display a listing of the resource based on a query
      */
     public function find(Request $request){
-        $request->validate([
-            'query' => 'string'
-        ]);
+//        $request->validate([
+//            'query' => 'string'
+//        ]);
+
+        $tagsString = $request->input('tags');
+        $tags = explode(' ', $tagsString);
 
         $wildcard = '%' . $request->input('query') . '%';
 
-        $movie = Movie::where('description', 'LIKE', $wildcard)->get()->sortByDesc('created_at');
+//        $movies = Movie::where(function ($query) use ($wildcard) {
+//            $query->where('title', 'LIKE', $wildcard)
+//                ->orWhere('director', 'LIKE', $wildcard)
+//                ->orWhere('genre', 'LIKE', $wildcard);
+//        })->orderByDesc('created_at')->get();
+
+        $query = Movie::where('status', '=', '1')->with('tags');
+
+        if (!empty($request->input('query'))) {
+            $query->where('title', 'LIKE', $wildcard);
+        }
+        if (!empty($request->input('tags'))) {
+            $query->whereHas('tags', function (Builder $query) use ($tags) {
+                foreach ($tags as $tag) {
+                    $query->where('genre', '=', $tag);
+                }
+            });
+//                ->toSql());
+        }
+        $movies = $query->get()->sortByDesc('created_at');
 
 
         return view('movies.search', compact('movies'));
+    }
+
+    public function status(Movie $movie) {
+        if (Auth::user()->id !== $movie->user_id) {
+            return redirect()->route('movies.index');
+        }
+        $movie->status = !$movie->status;
+
+        $movie->save();
+
+        return redirect()->route('user.movies');
     }
 
     /**
@@ -55,6 +85,11 @@ class MovieController extends Controller
      */
     public function create() {
         return view('movies.create');
+//        $likes = Auth::user()->likes()->count();
+//        if ($likes >= 5) {
+//            return view('movies.create');
+//        }
+//        return redirect()->route('movies.index');
     }
 
     /**
@@ -62,6 +97,11 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
+        $likes = Auth::user()->likes()->count();
+//        if ($likes < 5) {
+//            return redirect()->route('posts.index');
+//        }
+
         $data = $this->validator($request->all())->validate();
 
         $filename = '';
@@ -76,7 +116,7 @@ class MovieController extends Controller
             'title' => $data['title'],
             'director' => $data['director'],
             'image' => $filename,
-            'genre' => $data['genre'],
+//            'genre' => $data['genre'],
             'description' => $data['description'],
             'status' => 1,
             'user_id' => Auth::user()->id
@@ -85,10 +125,21 @@ class MovieController extends Controller
         return redirect()->route('movies.index');
     }
 
-    public function show() {
+    /**
+     * Display the specified resource.
+     */
+    public function show(Movie $movie)
+    {
+//        return view('movies.show', compact('movie'));
+        if ($movie->status != 1) {
+            return redirect()->route('movies.index');
+        }
         return view('movies.show', compact('movie'));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(Movie $movie)
     {
         if (Auth::user()->id !== $movie->user_id) {
@@ -123,7 +174,7 @@ class MovieController extends Controller
 
         $movie->director = $data['director'];
 
-        $movie->genre = $data['genre'];
+//        $movie->genre = $data['genre'];
 
         $movie->description = $data['description'];
 
@@ -151,7 +202,7 @@ class MovieController extends Controller
         return Validator::make($data, [
             'title' => ['required', 'string', 'max:255'],
             'director' => ['required', 'string', 'max:255'],
-            'genre' => ['required', 'string', 'max:255'],
+//            'genre' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'image' => ['mimes:jpg,jpeg,png,gif,svg,webp', 'max:10000']
         ]);

@@ -7,14 +7,48 @@
                 <form method="POST" action="{{ route('movies.update', $movie) }}" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
-                    <label for="description">Description</label>
-                    <input id="description" type="text" class="form-control @error('description')is-invalid @enderror" name="description" value="{{old('description', $post->description)}}">
-                    @error('description')
+                    <label for="description">Title</label>
+                    <input id="description" type="text" class="form-control @error('title')is-invalid @enderror" name="title" value="{{old('title', $movie->title)}}">
+                    @error('title')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
                     @enderror
 
+                    <label for="description">Director</label>
+                    <input id="description" type="text" class="form-control @error('director')is-invalid @enderror" name="director" value="{{old('director', $movie->director)}}">
+                    @error('director')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+
+                    <label for="image">Image</label>
+                    <input id="image" type="file" class="form-control @error('image')is-invalid @enderror" name="image" value="{{old('image', url("/img/movies/" . $movie->image))}}">
+
+                    <img src="{{old('image', url("/img/movies/" . $movie->image))}}" alt="Picture to be uploaded">
+
+                    @error('image')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+
+{{--                    <label for="genre">Genre</label>--}}
+{{--                    <input id="genre" type="text" class="form-control @error('genre')is-invalid @enderror" name="genre" value="{{old('genre', $movie->genre)}}">--}}
+{{--                    @error('genre')--}}
+{{--                    <div class="invalid-feedback">--}}
+{{--                        {{$message}}--}}
+{{--                    </div>--}}
+{{--                    @enderror--}}
+
+                    <label for="description">Description</label>
+                    <input id="description" type="text" class="form-control @error('description')is-invalid @enderror" name="description" value="{{old('description', $movie->description)}}">
+                    @error('description')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
                     <button type="submit" class="btn btn-primary">
                         Post
                     </button>

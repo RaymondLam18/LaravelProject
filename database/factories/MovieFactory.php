@@ -20,7 +20,7 @@ class MovieFactory extends Factory
             'title' => fake()->paragraph(),
             'director' => fake()->paragraph(),
             'image' => fake()->imageUrl(),
-            'genre' => fake()->paragraph(),
+//            'genre' => fake()->paragraph(),
             'description' => fake()->paragraph(),
             'user_id' => 1,
             'status' => 1,

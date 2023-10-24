@@ -90,7 +90,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('user.movies');
+        return redirect()->route('user.index');
 
     }
 

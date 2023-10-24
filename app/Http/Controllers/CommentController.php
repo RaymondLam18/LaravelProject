@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Models\Comment;
+use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CommentController extends Controller
 {
@@ -14,10 +19,10 @@ class CommentController extends Controller
 
         Comment::create([
             'description' => $request->input('description'),
-            'post_id' => $movie->id,
+            'movie_id' => $movie->id,
             'user_id' => Auth::id()
         ]);
 
-        return redirect()->route('posts.show', $movie);
+        return redirect()->route('movies.show', $movie);
     }
 }

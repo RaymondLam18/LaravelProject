@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('About') }}</div>
 
                     <div class="card-body">
-                        <p>Welcome to the about page</p>
+                        <p>This web has been made so that you can share movies like and you can comment about.</p>
                     </div>
                 </div>
             </div>

@@ -15,16 +15,16 @@
                     </div>
                     @enderror
 
-{{--                    <label for="profile-picture">Profile Picture</label>--}}
-{{--                    <input id="profile-picture" type="file" class="form-control @error('image')is-invalid @enderror" name="profile-picture" value="{{old('profile-picture', url("/img/users/" . $user->profile_picture))}}">--}}
+                    <label for="profile-picture">Profile Picture</label>
+                    <input id="profile-picture" type="file" class="form-control @error('image')is-invalid @enderror" name="profile-picture" value="{{old('profile-picture', url("/img/users/" . $user->profile_picture))}}">
 
-{{--                    <img src="{{old('profile-picture', url("/img/users/" . $user->profile_picture))}}" alt="Picture to be uploaded">--}}
+                    <img src="{{old('profile-picture', url("/img/users/" . $user->profile_picture))}}" alt="Picture to be uploaded">
 
-{{--                    @error('profile-picture')--}}
-{{--                    <div class="invalid-feedback">--}}
-{{--                        {{$message}}--}}
-{{--                    </div>--}}
-{{--                    @enderror--}}
+                    @error('profile-picture')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
 
                     <button type="submit" class="btn btn-primary">
                         Change

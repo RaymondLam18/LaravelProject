@@ -13,7 +13,7 @@ class Movie extends Model
         'title',
         'director',
         'image',
-        'genre',
+//        'genre',
         'description',
         'status',
         'user_id'
@@ -29,5 +29,9 @@ class Movie extends Model
 
     public function likes() {
         return $this->hasMany(Like::class);
+    }
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class);
     }
 }

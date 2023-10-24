@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -17,17 +20,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::get('/about', [App\Http\Controllers\AboutController::class, 'index'])->name('about');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/movie', [App\Http\Controllers\MovieController::class, 'index'])->name('movie');
+Route::patch('/movies/status/{movie}', [MovieController::class, 'status'])->name('movies.status');
+
+Route::get('/movies/search', [MovieController::class, 'find'])->name('movies.search');
 
 Route::resource('movies', MovieController::class);
 
-Route::get('/user/movies', [ProfileController::class, 'posts'])->name('user.movies');
+Route::get('/user/movies', [ProfileController::class, 'movies'])->name('user.movies');
+
+Route::post('/comments/store{movie}', [CommentController::class, 'store'])->name('comments.store');
 
 Route::resource('user', ProfileController::class);
+
+Route::get('like/toggle/{movie}', [LikeController::class, 'toggle'])->name('like.toggle');
