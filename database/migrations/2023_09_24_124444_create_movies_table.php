@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title', '500');
             $table->string('director', '500');
             $table->string('image');
-            $table->string('genre', '500');
+//            $table->string('genre', '500');
             $table->string('description', '500');
             $table->boolean('status');
             $table->foreignId('user_id')->constrained();

@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Http\Controllers\Controller;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use function Laravel\Prompts\select;
 
 class MovieController extends Controller
 {
@@ -24,9 +28,12 @@ class MovieController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-//        $movies = Movie::all();
-//        return view('movie', ['movies' => $movies]);
-        $movies = Movie::all()->sortByDesc('created_at')->where('status', '=', '1');
+//        $movies = Movie::all()->sortByDesc('created_at')->where('status', '=', '1');
+        if (Auth::guest()) {
+            $movies = Movie::all()->sortByDesc('created_at')->where('status', '=', '1');
+        } else {
+            $movies = Movie::all()->sortByDesc('created_at')->where('status', '=', '1');
+        }
 
         return view('movies.home', compact('movies'));
     }
@@ -44,12 +51,6 @@ class MovieController extends Controller
 
         $wildcard = '%' . $request->input('query') . '%';
 
-//        $movies = Movie::where(function ($query) use ($wildcard) {
-//            $query->where('title', 'LIKE', $wildcard)
-//                ->orWhere('director', 'LIKE', $wildcard)
-//                ->orWhere('genre', 'LIKE', $wildcard);
-//        })->orderByDesc('created_at')->get();
-
         $query = Movie::where('status', '=', '1')->with('tags');
 
         if (!empty($request->input('query'))) {
@@ -58,7 +59,7 @@ class MovieController extends Controller
         if (!empty($request->input('tags'))) {
             $query->whereHas('tags', function (Builder $query) use ($tags) {
                 foreach ($tags as $tag) {
-                    $query->where('genre', '=', $tag);
+                    $query->where('tags_id', '=', $tag);
                 }
             });
 //                ->toSql());
@@ -85,11 +86,6 @@ class MovieController extends Controller
      */
     public function create() {
         return view('movies.create');
-//        $likes = Auth::user()->likes()->count();
-//        if ($likes >= 5) {
-//            return view('movies.create');
-//        }
-//        return redirect()->route('movies.index');
     }
 
     /**
@@ -97,10 +93,6 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        $likes = Auth::user()->likes()->count();
-//        if ($likes < 5) {
-//            return redirect()->route('posts.index');
-//        }
 
         $data = $this->validator($request->all())->validate();
 
@@ -112,7 +104,7 @@ class MovieController extends Controller
             $image->move(public_path('img/movies'), $filename);
         }
 
-        Movie::create([
+        $movie = Movie::create([
             'title' => $data['title'],
             'director' => $data['director'],
             'image' => $filename,
@@ -122,6 +114,12 @@ class MovieController extends Controller
             'user_id' => Auth::user()->id
         ]);
 
+        unset($data['description'], $data['image']);
+
+        foreach ($data as $item) {
+            $movie->tags()->attach($item);
+        }
+
         return redirect()->route('movies.index');
     }
 
@@ -130,7 +128,6 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-//        return view('movies.show', compact('movie'));
         if ($movie->status != 1) {
             return redirect()->route('movies.index');
         }
@@ -199,12 +196,27 @@ class MovieController extends Controller
 
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $tags = Tag::all();
+        $validationArray = [
             'title' => ['required', 'string', 'max:255'],
             'director' => ['required', 'string', 'max:255'],
 //            'genre' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'image' => ['mimes:jpg,jpeg,png,gif,svg,webp', 'max:10000']
-        ]);
+        ];
+        foreach ($tags as $tag) {
+            $validationArray[$tag->name] = ['numeric'];
+        }
+        return Validator::make($data, $validationArray);
     }
+
+//    protected function validatorTags(array $data)
+//    {
+//        $tags = Tag::all();
+//        $validationArray = [];
+//        foreach ($tags as $tag) {
+//            $validationArray[$tag->id] = ['numeric'];
+//        }
+//        return Validator::make($data, $validationArray);
+//    }
 }

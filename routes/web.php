@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,4 +39,6 @@ Route::post('/comments/store{movie}', [CommentController::class, 'store'])->name
 
 Route::resource('user', ProfileController::class);
 
-Route::get('like/toggle/{movie}', [LikeController::class, 'toggle'])->name('like.toggle');
+Route::resource('tags', TagController::class);
+
+Route::get('admin', [AdminController::class, 'index'])->name('admin.index');

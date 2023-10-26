@@ -22,6 +22,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return redirect() -> route('movies.index');
+        return view('home');
     }
 }

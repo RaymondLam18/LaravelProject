@@ -38,6 +38,21 @@
 {{--                    </div>--}}
 {{--                    @enderror--}}
 
+                    <div>
+                        Tags
+                    </div>
+                    @foreach(\App\Models\Tag::all() as $tag)
+                        <div class="form-check">
+                            <label for="{{$tag->genre}}" class="form-check-label">{{$tag->genre}}</label>
+                            <input id="{{$tag->genre}}" type="checkbox" class="form-check-input @error($tag->genre)is-invalid @enderror" name="{{$tag->genre}}" value="{{$tag->id}}">
+                        </div>
+                        @error($tag->genre)
+                        <div class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                        @enderror
+                    @endforeach
+
                     <label for="description">Description</label>
                     <input id="description" type="text" class="form-control @error('description')is-invalid @enderror" name="description" value="{{old('description')}}">
                     @error('description')

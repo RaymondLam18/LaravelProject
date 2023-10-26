@@ -29,14 +29,6 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-{{--                    <ul class="navbar-nav me-auto">--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="{{ url('/home') }}">Home</a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="{{ url('/movie') }}">Movie</a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/about') }}">About</a>
@@ -47,13 +39,23 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('movies.create')}}">Create</a>
                         </li>
+                        @if(!auth()->guest() && auth()->user()->admin == 1)
+                            <li>
+                                <a class="nav-link" href="{{route('admin.index')}}">Admin</a>
+                            </li>
+                        @endif
                     </ul>
 
                     <ul class="navbar-nav mb-auto">
                         <form action="{{route('movies.search')}}" method="GET">
                             <div class="input-group">
-                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
-                                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Tags</button>
+                                <ul class="dropdown-menu" id="dropdown">
+                                    @foreach(\App\Models\Tag::all() as $tag)
+                                        <li><a class="dropdown-item" data-id="{{$tag->id}}" href="#">{{$tag->genre}}</a></li>
+                                    @endforeach
+                                </ul>
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query" value="{{request('query', '')}}">                                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
                             </div>
                         </form>
                     </ul>

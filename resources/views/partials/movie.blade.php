@@ -41,8 +41,14 @@
 {{--        <div class="content">{{$movie->genre}}</div>--}}
         <div class="content">{{$movie->description}}</div>
     </div>
+    @if($movie->tags()->exists())
+        <div class="card-body">
+            @foreach($movie->tags()->get() as $tag)
+                <a href="{{route('movies.search', 'tags=' . $tag->id)}}" class="btn btn-outline-primary">{{$tag->genre}}</a>
+            @endforeach
+        </div>
+    @endif
     <div class="card-footer d-flex justify-content-between">
-        <a id="like" data-id="{{$movie->id}}" class="btn @if($movie->likes()->where('user_id', '=', auth()->id())->exists()) btn-outline-primary @else btn-primary @endif">Likes: {{$movie->likes()->count()}}</a>
         <a class="btn btn-primary" href="{{route('movies.show', $movie->id)}}">
             Comments: {{$movie->comments()->count()}}
         </a>
