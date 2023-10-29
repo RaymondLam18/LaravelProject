@@ -31,3 +31,30 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+
+let element
+let hiddenForm
+
+window.addEventListener('load', init);
+
+function init() {
+    let dropdownContainer = document.getElementById('dropdown')
+    dropdownContainer.addEventListener('click', DropdownClickHander)
+    hiddenForm = document.getElementById('hidden-form')
+}
+
+function DropdownClickHander(e) {
+    element = e.target;
+    if (element.tagName !== 'A') {
+        return;
+    }
+    console.log(hiddenForm.value.includes(element.dataset.id))
+    if (hiddenForm.value.includes(element.dataset.id)) {
+        hiddenForm.value = hiddenForm.value.replace(' ' + element.dataset.id, '')
+        element.classList.remove('dropdown-item-outline')
+    } else {
+        hiddenForm.value = hiddenForm.value + ' ' + element.dataset.id
+        element.classList.add('dropdown-item-outline')
+    }
+}
+

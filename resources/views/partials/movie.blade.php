@@ -33,25 +33,22 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="content">{{$movie->title}}</div>
-        <div class="content">{{$movie->director}}</div>
+        <div class="m-3 h5">
+            <!-- Add a bold label for the title -->
+            <label for="movie-title" class="title-label">Title:</label>
+            <span id="movie-title"><strong>{{$movie->title}}</strong></span>
+        </div>
+        <div class="m-3 h5">
+            <!-- Add a bold label for the director -->
+            <label for="movie-director" class="title-label">Director:</label>
+            <span id="movie-director"><strong>{{$movie->director}}</strong></span>
+        </div>
         @if($movie->image)
             <img class="img-fluid" src="{{url("/img/movies/" . $movie->image)}}" alt="Image of the movie">
         @endif
-{{--        <div class="content">{{$movie->genre}}</div>--}}
-        <div class="content">{{$movie->description}}</div>
     </div>
-    @if($movie->tags()->exists())
-        <div class="card-body">
-            @foreach($movie->tags()->get() as $tag)
-                <a href="{{route('movies.search', 'tags=' . $tag->id)}}" class="btn btn-outline-primary">{{$tag->genre}}</a>
-            @endforeach
-        </div>
-    @endif
     <div class="card-footer d-flex justify-content-between">
-        <a class="btn btn-primary" href="{{route('movies.show', $movie->id)}}">
-            Comments: {{$movie->comments()->count()}}
-        </a>
-        <div class="fw-bold">{{$movie->created_at}}</div>
+        <a class="btn btn-primary" href="{{route('movies.show', $movie->id)}}">Comment</a>
+        <a class="btn btn-secondary" href="{{route('movies.details', $movie->id)}}">Details</a>
     </div>
 </div>

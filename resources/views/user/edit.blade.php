@@ -15,6 +15,14 @@
                     </div>
                     @enderror
 
+                    <label for="email">Email</label>
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}">
+                    @error('email')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+
                     <label for="profile-picture">Profile Picture</label>
                     <input id="profile-picture" type="file" class="form-control @error('image')is-invalid @enderror" name="profile-picture" value="{{old('profile-picture', url("/img/users/" . $user->profile_picture))}}">
 

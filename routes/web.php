@@ -33,6 +33,8 @@ Route::get('/movies/search', [MovieController::class, 'find'])->name('movies.sea
 
 Route::resource('movies', MovieController::class);
 
+Route::get('movies/details/{id}', [MovieController::class, 'details'])->name('movies.details');
+
 Route::get('/user/movies', [ProfileController::class, 'movies'])->name('user.movies');
 
 Route::post('/comments/store{movie}', [CommentController::class, 'store'])->name('comments.store');
@@ -41,4 +43,8 @@ Route::resource('user', ProfileController::class);
 
 Route::resource('tags', TagController::class);
 
-Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
+Route::group(['middleware' => ['auth', 'admin']], function () {
+    Route::get('/admin', [AdminController::class, 'index']);
+});

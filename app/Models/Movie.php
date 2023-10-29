@@ -13,7 +13,6 @@ class Movie extends Model
         'title',
         'director',
         'image',
-//        'genre',
         'description',
         'status',
         'user_id'

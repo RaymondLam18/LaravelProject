@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <div class="h5 fw-bold text-center">Create Movie</div>
                 <form method="POST" action="{{ route('movies.store') }}" enctype="multipart/form-data">
                     @csrf
                     <label for="title">Title</label>
@@ -29,14 +30,6 @@
                         {{$message}}
                     </div>
                     @enderror
-
-{{--                    <label for="genre">Genre</label>--}}
-{{--                    <input id="genre" type="text" class="form-control @error('genre')is-invalid @enderror" name="genre" value="{{old('genre')}}">--}}
-{{--                    @error('genre')--}}
-{{--                    <div class="invalid-feedback">--}}
-{{--                        {{$message}}--}}
-{{--                    </div>--}}
-{{--                    @enderror--}}
 
                     <div>
                         Tags

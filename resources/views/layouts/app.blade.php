@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Movie Community</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -21,7 +21,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <strong>Movie Community</strong>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -47,15 +47,27 @@
                     </ul>
 
                     <ul class="navbar-nav mb-auto">
-                        <form action="{{route('movies.search')}}" method="GET">
+{{--                        <form action="{{route('movies.search')}}" method="GET">--}}
+{{--                            <div class="input-group">--}}
+{{--                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Genres</button>--}}
+{{--                                <ul class="dropdown-menu" id="dropdown">--}}
+{{--                                    @foreach(\App\Models\Tag::all() as $tag)--}}
+{{--                                        <li><a class="dropdown-item" data-id="{{$tag->id}}" href="#">{{$tag->genre}}</a></li>--}}
+{{--                                    @endforeach--}}
+{{--                                </ul>--}}
+{{--                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query" value="{{request('query', '')}}">                                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>--}}
+{{--                            </div>--}}
+{{--                        </form>--}}
+                        <form action="{{ route('movies.index') }}" method="GET">
                             <div class="input-group">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Tags</button>
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Genres</button>
                                 <ul class="dropdown-menu" id="dropdown">
                                     @foreach(\App\Models\Tag::all() as $tag)
-                                        <li><a class="dropdown-item" data-id="{{$tag->id}}" href="#">{{$tag->genre}}</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('movies.index', ['genre' => $tag->genre]) }}">{{ $tag->genre }}</a></li>
                                     @endforeach
                                 </ul>
-                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query" value="{{request('query', '')}}">                                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query" value="{{ request('query', '') }}">
+                                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
                             </div>
                         </form>
                     </ul>
