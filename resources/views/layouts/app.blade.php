@@ -39,9 +39,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('movies.create')}}">Create</a>
                         </li>
-                        @if(!auth()->guest() && auth()->user()->admin == 1)
+                        @if(!auth()->guest() && auth()->user()->id == 1)
                             <li>
-                                <a class="nav-link" href="{{route('admin.index')}}">Admin</a>
+                                <a class="nav-link" href="{{route('tags.index')}}">Admin</a>
                             </li>
                         @endif
                     </ul>
