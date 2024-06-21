@@ -296,12 +296,16 @@ class MovieController extends Controller
             return redirect()->route('user.movies');
         }
 
+        // Verwijder de gekoppelde tags handmatig
+        $movie->tags()->detach();
+
         // Verwijder de film uit de opslag.
         $movie->delete();
 
         // Doorverwijzen naar de lijst van films van de gebruiker.
         return redirect()->route('user.movies');
     }
+
 
     /**
      * Validate the data before creating or updating a movie.
